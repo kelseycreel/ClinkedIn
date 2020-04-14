@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ClickedIn.Models;
+using ClinkedIn.Models;
 
 
-namespace ClickedIn.DataAccess
+namespace ClinkedIn.DataAccess
 {
     public class ClinkerRepository
     {
@@ -217,5 +217,23 @@ namespace ClickedIn.DataAccess
             var daysRemaining = (clinkerReleaseDate - today).Days;
             return daysRemaining;
         }
+
+        public List<Clinker> GetClinkersCrew(int clinkerId)
+        {
+            var clinker = GetClinkerById(clinkerId);
+            List<Clinker> crew = new List<Clinker>();
+            var homies = clinker.Homies;
+            foreach (var homie in homies)
+            {
+                var homiesHomies = homie.Homies;
+                foreach (var hh in homiesHomies)
+                {
+                    crew.Add(hh);
+                }
+                crew.Add(homie);
+            }
+            return crew;
+        }
+
     }
 }

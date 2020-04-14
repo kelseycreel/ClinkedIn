@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ClickedIn.Models
+namespace ClinkedIn.Models
 {
     public class ClinkerProfile
     {
