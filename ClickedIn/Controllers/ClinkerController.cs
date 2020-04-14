@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ClickedIn.DataAccess;
-using ClickedIn.Models;
+using ClinkedIn.DataAccess;
+using ClinkedIn.Models;
 
-namespace ClickedIn.Controllers
+namespace ClinkedIn.Controllers
 {
     [Route("api/clinker")]
     [ApiController]
@@ -23,14 +23,14 @@ namespace ClickedIn.Controllers
             return Created("", clinkerToAdd);  
         }
 
-        [HttpGet("{Id}/id")]
+        [HttpGet("id/{Id}")]
         public IActionResult GetClinkerById(int id)
         {
             var result = _repository.GetClinkerById(id);
             return Ok(result);
         }
 
-        [HttpGet("{interestString}/interest")]
+        [HttpGet("interest/{interestString}")]
         public IActionResult GetClinkersByInterest(string interestString)
         {
              var result = _repository.GetClinkersByInterest(interestString);
@@ -42,7 +42,7 @@ namespace ClickedIn.Controllers
             return NotFound("There are no clinkers with this interest.");
         }
 
-        [HttpGet("{serviceString}/service")]
+        [HttpGet("service/{serviceString}")]
         public IActionResult GetClinkersByServices(string serviceString)
         {
             var result = _repository.GetClinkersByServices(serviceString);
@@ -76,25 +76,38 @@ namespace ClickedIn.Controllers
             return Ok(clinker);
         }
 
-        [HttpPut("{clinkerId}/id/{clinkerInterest}/{AddOrRemove}")]
+        [HttpPut("{AddOrRemove}/id/{clinkerId}/interest/{clinkerInterest}")]
         public IActionResult UpdateInterests(int clinkerId, string clinkerInterest, string AddOrRemove)
         {
             var clinker = _repository.UpdateInterests(clinkerId, clinkerInterest, AddOrRemove);
             return Ok(clinker);
         }
 
-        [HttpPut("{clinkerId}/id/{clinkerService}")]
+        [HttpPut("id/{clinkerId}/{clinkerService}")]
         public IActionResult UpdateService(int clinkerId, string clinkerService)
         {
             var clinker = _repository.UpdateService(clinkerId, clinkerService);
             return Ok(clinker);
         }
         
-        [HttpGet(("{Id}/remainingDays"))]
-        public IActionResult RemainingDays(int Id)
+        [HttpGet("remainingDays/{clinkerId}")]
+        public IActionResult RemainingDays(int clinkerId)
         {
-            var clinker = _repository.RemainingSentence(Id);
-            return Ok(clinker);
+            var days = _repository.RemainingSentence(clinkerId);
+            return Ok($"There are {days} days remaining in the clinker's sentence.");
+        }
+
+        [HttpGet("crew/{clinkerId}")]
+        public IActionResult GetClinkersCrew(int clinkerId)
+        {
+            var crew = _repository.GetClinkersCrew(clinkerId);
+            var stringToPrint = "The clinker's crew: ";
+            foreach (var mate in crew)
+            {
+                stringToPrint += mate.HoodName + ", ";
+            }
+            stringToPrint.Substring(stringToPrint.Length - 2);
+            return Ok($"{stringToPrint}");
         }
     }
 }

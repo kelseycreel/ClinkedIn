@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "ClickedIn": {
+    "ClinkedIn": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
