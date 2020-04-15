@@ -161,9 +161,11 @@ namespace ClinkedIn.DataAccess
         public Clinker AddHomies(int clinkerId, int homieId)
         {
             var clinker = GetClinkerById(clinkerId);
-            var homie = GetClinkerById(homieId);
-            clinker.Homies.Add(homie);
+            var newHomie = GetClinkerById(homieId);
+            clinker.Homies.Add(newHomie);
+            newHomie.Homies.Add(clinker);
             return clinker;
+
         }
 
         public Clinker AddEnemy(int clinkerId, int enemyId)
@@ -223,6 +225,9 @@ namespace ClinkedIn.DataAccess
             var clinker = GetClinkerById(clinkerId);
             List<Clinker> crew = new List<Clinker>();
             var homies = clinker.Homies;
+
+            crew = clinker.Homies.SelectMany(homie => homie.Homies).ToList();
+
             foreach (var homie in homies)
             {
                 var homiesHomies = homie.Homies;
